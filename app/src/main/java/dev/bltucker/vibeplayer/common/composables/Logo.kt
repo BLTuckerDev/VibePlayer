@@ -6,6 +6,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
@@ -19,7 +20,7 @@ fun Logo(
     size: Dp = 32.dp
 ) {
     Icon(
-        imageVector = ImageVector.vectorResource(R.drawable.ic_launcher_foreground),
+        painter = painterResource(R.drawable.logo_svg),
         contentDescription = "VibePlayer Logo",
         modifier = modifier.size(size),
         tint = MaterialTheme.colorScheme.tertiary
