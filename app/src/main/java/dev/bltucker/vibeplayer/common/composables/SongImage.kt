@@ -23,7 +23,7 @@ import coil3.compose.AsyncImage
 import coil3.request.ImageRequest
 import coil3.request.crossfade
 import dev.bltucker.vibeplayer.R
-import dev.bltucker.vibeplayer.ui.theme.VibePlayerTheme
+import dev.bltucker.vibeplayer.common.theme.VibePlayerTheme
 
 @Composable
 fun SongImage(

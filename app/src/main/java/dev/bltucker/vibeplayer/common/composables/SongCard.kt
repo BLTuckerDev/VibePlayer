@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.bltucker.vibeplayer.ui.theme.VibePlayerTheme
+import dev.bltucker.vibeplayer.common.theme.VibePlayerTheme
 
 @Composable
 fun SongCard(

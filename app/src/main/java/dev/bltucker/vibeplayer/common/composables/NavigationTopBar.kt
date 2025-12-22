@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import dev.bltucker.vibeplayer.R
-import dev.bltucker.vibeplayer.ui.theme.VibePlayerTheme
+import dev.bltucker.vibeplayer.common.theme.VibePlayerTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

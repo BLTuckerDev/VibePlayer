@@ -1,4 +1,4 @@
-package dev.bltucker.vibeplayer.ui.theme
+package dev.bltucker.vibeplayer.common.theme
 
 import androidx.compose.ui.graphics.Color
 
