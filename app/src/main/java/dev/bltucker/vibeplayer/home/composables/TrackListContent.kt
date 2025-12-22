@@ -182,35 +182,40 @@ private fun TrackListContentPreview() {
             name = "505",
             artist = "Arctic Monkeys",
             duration = "4:14",
-            albumArtUri = null
+            albumArtUri = null,
+            contentUri = ""
         ),
         Track(
             id = "2",
             name = "505",
             artist = "Arctic Monkeys",
             duration = "4:14",
-            albumArtUri = null
+            albumArtUri = null,
+            contentUri = ""
         ),
         Track(
             id = "3",
             name = "505",
             artist = "Arctic Monkeys",
             duration = "4:14",
-            albumArtUri = null
+            albumArtUri = null,
+            contentUri = ""
         ),
         Track(
             id = "4",
             name = "505",
             artist = "Arctic Monkeys",
             duration = "4:14",
-            albumArtUri = null
+            albumArtUri = null,
+            contentUri = ""
         ),
         Track(
             id = "5",
             name = "505",
             artist = "Arctic Monkeys",
             duration = "4:14",
-            albumArtUri = null
+            albumArtUri = null,
+            contentUri = ""
         )
     )
 
@@ -229,7 +234,8 @@ private fun TrackItemPreview() {
                 name = "505",
                 artist = "Arctic Monkeys",
                 duration = "4:14",
-                albumArtUri = null
+                albumArtUri = null,
+                contentUri = "",
             ),
             onClick = {}
         )
