@@ -38,9 +38,16 @@ class PermissionScreenViewModel @Inject constructor(
     }
 
     fun onPermissionResult(isGranted: Boolean) {
-        mutableModel.value = modelReducer.updateWithPermissionStatus(
-            mutableModel.value,
-            isGranted
-        )
+        if (isGranted) {
+            mutableModel.value = modelReducer.updateWithPermissionStatus(
+                mutableModel.value,
+                true
+            )
+        } else {
+            mutableModel.value = modelReducer.updateWithPermissionDenied(
+                mutableModel.value,
+                true
+            )
+        }
     }
 }
