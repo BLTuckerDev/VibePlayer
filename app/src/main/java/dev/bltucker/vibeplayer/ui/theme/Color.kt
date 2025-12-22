@@ -4,6 +4,8 @@ import androidx.compose.ui.graphics.Color
 
 val ButtonPrimary = Color(0xFFDE84FF)
 val ButtonPrimary30 = Color(0x4DDE84FF)
+val ButtonPressed = Color(0xFFB366CC)
+val ButtonDisabled = Color(0xFF4C647C)
 val ButtonHover = Color(0x471A2735)
 
 val TextPrimary = Color(0xFFFFFFFF)

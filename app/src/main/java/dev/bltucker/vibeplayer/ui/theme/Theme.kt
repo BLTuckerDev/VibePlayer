@@ -8,7 +8,7 @@ import androidx.compose.ui.graphics.Color
 private val DarkColorScheme = darkColorScheme(
     primary = ButtonPrimary,
     onPrimary = TextPrimary,
-    primaryContainer = ButtonPrimary30,
+    primaryContainer = ButtonPrimary,
     onPrimaryContainer = TextPrimary,
     secondary = TextSecondary,
     onSecondary = SurfaceBG,
@@ -20,6 +20,8 @@ private val DarkColorScheme = darkColorScheme(
     onSurface = TextPrimary,
     surfaceVariant = ButtonHover,
     onSurfaceVariant = TextSecondary,
+    outline = TextSecondary,
+    outlineVariant = ButtonPrimary30,
     error = Color(0xFFCF6679),
     onError = Color.Black
 )
@@ -31,6 +33,7 @@ fun VibePlayerTheme(
     MaterialTheme(
         colorScheme = DarkColorScheme,
         typography = Typography,
+        shapes = AppShapes,
         content = content
     )
 }
