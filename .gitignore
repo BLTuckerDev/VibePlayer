@@ -17,3 +17,4 @@ local.properties
 ai/
 
 .idea/deviceManager.xml
+/.claude/
