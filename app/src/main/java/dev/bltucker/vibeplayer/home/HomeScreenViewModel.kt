@@ -2,8 +2,10 @@ package dev.bltucker.vibeplayer.home
 
 import androidx.annotation.VisibleForTesting
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bltucker.vibeplayer.common.PermissionChecker
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -12,7 +14,8 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeScreenViewModel @Inject constructor(
     private val permissionChecker: PermissionChecker,
-    private val modelReducer: HomeScreenModelReducer
+    private val modelReducer: HomeScreenModelReducer,
+    private val mediaScanner: MediaScanner
 ) : ViewModel() {
 
     @VisibleForTesting
@@ -64,7 +67,28 @@ class HomeScreenViewModel @Inject constructor(
         mutableModel.update {
             modelReducer.updateModelWithIsScanning(it, true)
         }
-        // TODO: Trigger actual scan operation
+        
+        viewModelScope.launch {
+            val currentModel = mutableModel.value
+            val result = mediaScanner.scanForAudio(
+                minDurationMillis = currentModel.ignoreDurationSecondsSetting,
+                minSizeBytes = currentModel.ignoreSizeBytesSetting
+            )
+            
+            result.onSuccess { tracks ->
+                mutableModel.update {
+                    modelReducer.updateModelWithTrackList(it, tracks)
+                }
+            }.onFailure {
+                mutableModel.update { model ->
+                    modelReducer.updateModelWithIsError(model, true)
+                }
+            }
+            
+            mutableModel.update {
+                modelReducer.updateModelWithIsScanning(it, false)
+            }
+        }
     }
 
     fun onScanAgainClick() {
