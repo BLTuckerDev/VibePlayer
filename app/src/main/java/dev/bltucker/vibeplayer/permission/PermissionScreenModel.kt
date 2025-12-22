@@ -5,7 +5,7 @@ import javax.inject.Inject
 
 data class PermissionScreenModel(
     val hasPermission: Boolean = false,
-    val shouldShowRationale: Boolean = false
+    val permissionDenied: Boolean = false
 )
 
 @Reusable
@@ -19,10 +19,10 @@ class PermissionScreenModelReducer @Inject constructor() {
         return previousModel.copy(hasPermission = hasPermission)
     }
 
-    fun updateWithRationaleStatus(
+    fun updateWithPermissionDenied(
         previousModel: PermissionScreenModel,
-        shouldShowRationale: Boolean
+        denied: Boolean
     ): PermissionScreenModel {
-        return previousModel.copy(shouldShowRationale = shouldShowRationale)
+        return previousModel.copy(permissionDenied = denied)
     }
 }
