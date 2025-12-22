@@ -1,21 +1,27 @@
 package dev.bltucker.vibeplayer.permission
 
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -91,12 +97,24 @@ private fun PermissionScreen(
         onPermissionResult(isGranted)
     }
 
-    PermissionContent(
-        modifier = modifier,
-        onAllowAccessClick = {
-            permissionLauncher.launch(permissionChecker.getRequiredPermission())
-        }
-    )
+    if (permissionDenied) {
+        PermissionDeniedContent(
+            modifier = modifier,
+            onOpenSettings = {
+                val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS).apply {
+                    data = Uri.fromParts("package", context.packageName, null)
+                }
+                context.startActivity(intent)
+            }
+        )
+    } else {
+        PermissionContent(
+            modifier = modifier,
+            onAllowAccessClick = {
+                permissionLauncher.launch(permissionChecker.getRequiredPermission())
+            }
+        )
+    }
 }
 
 @Composable
@@ -166,6 +184,73 @@ private fun PermissionContent(
     }
 }
 
+@Composable
+private fun PermissionDeniedContent(
+    modifier: Modifier = Modifier,
+    onOpenSettings: () -> Unit
+) {
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .padding(horizontal = 32.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
+        Image(
+            painter = painterResource(id = R.drawable.logo_svg),
+            contentDescription = "VibePlayer Logo",
+            modifier = Modifier.size(120.dp)
+        )
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        Text(
+            text = "Permission Required",
+            style = MaterialTheme.typography.headlineLarge.copy(
+                fontWeight = FontWeight.Bold,
+                fontSize = 28.sp
+            ),
+            color = MaterialTheme.colorScheme.onBackground
+        )
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "VibePlayer needs access to your music files to function properly. Without this permission, the app cannot build your music library or play songs.",
+            style = MaterialTheme.typography.bodyLarge.copy(
+                fontSize = 16.sp,
+                lineHeight = 24.sp
+            ),
+            color = MaterialTheme.colorScheme.secondary,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.padding(horizontal = 16.dp)
+        )
+
+        Spacer(modifier = Modifier.height(48.dp))
+
+        Button(
+            onClick = onOpenSettings,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            ),
+            shape = RoundedCornerShape(28.dp)
+        ) {
+            Text(
+                text = "Try Again",
+                style = MaterialTheme.typography.titleMedium.copy(
+                    fontWeight = FontWeight.SemiBold,
+                    fontSize = 16.sp
+                )
+            )
+        }
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 private fun PermissionScreenPreview() {
@@ -173,6 +258,17 @@ private fun PermissionScreenPreview() {
         PermissionContent(
             modifier = Modifier.fillMaxSize(),
             onAllowAccessClick = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+private fun PermissionDeniedScreenPreview() {
+    VibePlayerTheme {
+        PermissionDeniedContent(
+            modifier = Modifier.fillMaxSize(),
+            onOpenSettings = {}
         )
     }
 }
