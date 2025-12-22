@@ -13,6 +13,7 @@ data class HomeScreenModel(
     val isError: Boolean = false,
 
     val hasRequiredPermissions: Boolean? = null,
+    val needsToNavigateToPermissions: Boolean = false,
     val trackList: List<Track> = emptyList(),
 )
 
@@ -45,7 +46,14 @@ class HomeScreenModelReducer @Inject constructor() {
     }
 
     fun updateModelWithHasRequiredPermissions(previousModel: HomeScreenModel, hasRequiredPermissions: Boolean): HomeScreenModel {
-        return previousModel.copy(hasRequiredPermissions = hasRequiredPermissions)
+        return previousModel.copy(
+            hasRequiredPermissions = hasRequiredPermissions,
+            needsToNavigateToPermissions = !hasRequiredPermissions
+        )
+    }
+
+    fun clearNavigationToPermissions(previousModel: HomeScreenModel): HomeScreenModel {
+        return previousModel.copy(needsToNavigateToPermissions = false)
     }
 
     fun updateModelWithTrackList(previousModel: HomeScreenModel, trackList: List<Track>): HomeScreenModel {
@@ -53,7 +61,12 @@ class HomeScreenModelReducer @Inject constructor() {
     }
 
     fun updateModelWithIsScanning(previousModel: HomeScreenModel, isScanning: Boolean): HomeScreenModel {
-        return previousModel.copy(isScanning = isScanning, hasScannedAtLeastOnce = true, isError = false)
+        return previousModel.copy(
+            isScanning = isScanning,
+            hasScannedAtLeastOnce = true,
+            showScannerSettings = false,
+            isError = false
+        )
     }
 
 }
