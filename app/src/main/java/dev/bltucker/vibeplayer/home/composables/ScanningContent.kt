@@ -1,5 +1,11 @@
 package dev.bltucker.vibeplayer.home.composables
 
+import androidx.compose.animation.core.LinearEasing
+import androidx.compose.animation.core.RepeatMode
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -11,8 +17,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -23,6 +31,17 @@ import dev.bltucker.vibeplayer.common.theme.VibePlayerTheme
 
 @Composable
 fun ScanningContent(modifier: Modifier = Modifier) {
+    val infiniteTransition = rememberInfiniteTransition(label = "scanning_rotation")
+    val rotation by infiniteTransition.animateFloat(
+        initialValue = 0f,
+        targetValue = 360f,
+        animationSpec = infiniteRepeatable(
+            animation = tween(2000, easing = LinearEasing),
+            repeatMode = RepeatMode.Restart
+        ),
+        label = "rotation"
+    )
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -33,7 +52,9 @@ fun ScanningContent(modifier: Modifier = Modifier) {
         Image(
             painter = painterResource(R.drawable.scanning_home_image),
             contentDescription = "Scanning",
-            modifier = Modifier.size(120.dp)
+            modifier = Modifier
+                .size(120.dp)
+                .rotate(rotation)
         )
 
         Spacer(modifier = Modifier.height(32.dp))
