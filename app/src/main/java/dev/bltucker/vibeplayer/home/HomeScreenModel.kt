@@ -22,6 +22,7 @@ data class Track(
     val name: String,
     val artist: String,
     val duration: String,
+    val contentUri: String,
     val albumArtUri: String? = null
 )
 
