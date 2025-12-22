@@ -28,7 +28,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.LifecycleResumeEffect
 import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -56,12 +57,20 @@ fun NavGraphBuilder.permissionScreen(
             onStopOrDispose { }
         }
 
-        if (model.hasPermission) {
-            onPermissionGranted()
+        LifecycleResumeEffect(Unit) {
+            viewModel.checkPermission()
+            onPauseOrDispose { }
+        }
+
+        androidx.compose.runtime.LaunchedEffect(model.hasPermission) {
+            if (model.hasPermission) {
+                onPermissionGranted()
+            }
         }
 
         PermissionScreen(
             modifier = Modifier.fillMaxSize(),
+            permissionDenied = model.permissionDenied,
             onPermissionResult = viewModel::onPermissionResult
         )
     }
@@ -70,6 +79,7 @@ fun NavGraphBuilder.permissionScreen(
 @Composable
 private fun PermissionScreen(
     modifier: Modifier = Modifier,
+    permissionDenied: Boolean = false,
     onPermissionResult: (Boolean) -> Unit
 ) {
     val context = LocalContext.current
