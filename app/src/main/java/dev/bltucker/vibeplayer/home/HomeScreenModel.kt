@@ -7,6 +7,8 @@ data class HomeScreenModel(
     val isScanning: Boolean = false,
     val hasScannedAtLeastOnce: Boolean = false,
     val showScannerSettings: Boolean = false,
+    val ignoreDurationSecondsSetting: Long = 30_000,
+    val ignoreSizeBytesSetting: Long = 100_000,
 
     val isError: Boolean = false,
 
@@ -14,12 +16,33 @@ data class HomeScreenModel(
     val trackList: List<Track> = emptyList(),
 )
 
-//TODO what is a track
-data class Track(val name: String)
+data class Track(
+    val id: String,
+    val name: String,
+    val artist: String,
+    val duration: String,
+    val albumArtUri: String? = null
+)
 
 @Reusable
 class HomeScreenModelReducer @Inject constructor() {
     fun createInitialState() = HomeScreenModel()
+
+    fun updateModelWithIgnoreSizeBytesSetting(previousModel: HomeScreenModel, ignoreSizeBytesSetting: Long): HomeScreenModel {
+        return previousModel.copy(ignoreSizeBytesSetting = ignoreSizeBytesSetting)
+    }
+
+    fun updateModelWithIgnoreDurationSecondsSetting(previousModel: HomeScreenModel, ignoreDurationSecondsSetting: Long): HomeScreenModel {
+        return previousModel.copy(ignoreDurationSecondsSetting = ignoreDurationSecondsSetting)
+    }
+
+    fun updateModelWithIsError(previousModel: HomeScreenModel, isError: Boolean): HomeScreenModel {
+        return previousModel.copy(isError = isError)
+    }
+
+    fun updateModelWithShowScannerSettings(previousModel: HomeScreenModel, showScannerSettings: Boolean): HomeScreenModel {
+        return previousModel.copy(showScannerSettings = showScannerSettings)
+    }
 
     fun updateModelWithHasRequiredPermissions(previousModel: HomeScreenModel, hasRequiredPermissions: Boolean): HomeScreenModel {
         return previousModel.copy(hasRequiredPermissions = hasRequiredPermissions)
