@@ -6,6 +6,7 @@ import android.net.Uri
 import android.provider.MediaStore
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.android.scopes.ViewModelScoped
+import dev.bltucker.vibeplayer.db.TrackEntity
 import dev.bltucker.vibeplayer.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -14,12 +15,13 @@ import javax.inject.Inject
 @ViewModelScoped
 class MediaScanner @Inject constructor(
     @ApplicationContext private val context: Context,
-    @IoDispatcher private val ioDispatcher: CoroutineDispatcher
+    @IoDispatcher private val ioDispatcher: CoroutineDispatcher,
+    private val tracksRepository: TracksRepository
 ) {
 
-    suspend fun scanForAudio(minDurationMillis: Long, minSizeBytes: Long): Result<List<Track>> = withContext(ioDispatcher) {
+    suspend fun scanForAudio(minDurationMillis: Long, minSizeBytes: Long): Result<Boolean> = withContext(ioDispatcher) {
         runCatching {
-            val tracks = mutableListOf<Track>()
+            val tracks = mutableListOf<TrackEntity>()
 
             val collection = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI
 
@@ -71,7 +73,7 @@ class MediaScanner @Inject constructor(
                         )
 
                         tracks.add(
-                            Track(
+                            TrackEntity(
                                 id = id.toString(),
                                 name = title,
                                 artist = artist,
@@ -84,7 +86,8 @@ class MediaScanner @Inject constructor(
                 }
             }
 
-            tracks
+            tracksRepository.addTracks(tracks)
+            true
         }
     }
 
