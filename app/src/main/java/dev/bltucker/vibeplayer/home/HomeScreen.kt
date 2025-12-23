@@ -26,7 +26,8 @@ import dev.bltucker.vibeplayer.home.composables.TrackListContent
 const val HOME_SCREEN_ROUTE = "home"
 
 fun NavGraphBuilder.homeScreen(
-    onNavigateToPermissions: () -> Unit
+    onNavigateToPermissions: () -> Unit,
+    onNavigateToPlayer: (String) -> Unit
 ) {
     composable(route = HOME_SCREEN_ROUTE) {
         val viewModel = hiltViewModel<HomeScreenViewModel>()
@@ -58,7 +59,9 @@ fun NavGraphBuilder.homeScreen(
             onDurationSettingChanged = viewModel::onDurationSettingChanged,
             onSizeSettingChanged = viewModel::onSizeSettingChanged,
             onScanAgainClick = viewModel::onScanAgainClick,
-            onTrackClick = viewModel::onTrackClick
+            onTrackClick = { track ->
+                onNavigateToPlayer(track.id)
+            }
         )
     }
 }

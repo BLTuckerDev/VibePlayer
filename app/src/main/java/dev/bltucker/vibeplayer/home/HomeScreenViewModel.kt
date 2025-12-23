@@ -113,8 +113,4 @@ class HomeScreenViewModel @Inject constructor(
             modelReducer.updateModelWithShowScannerSettings(it, true)
         }
     }
-
-    fun onTrackClick(track: TrackEntity) {
-        // TODO: Navigate to now playing or start playback
-    }
 }
