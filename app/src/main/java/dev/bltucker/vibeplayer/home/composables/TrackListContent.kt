@@ -36,13 +36,13 @@ import dev.bltucker.vibeplayer.common.theme.SurfaceBG
 import dev.bltucker.vibeplayer.common.theme.TextPrimary
 import dev.bltucker.vibeplayer.common.theme.TextSecondary
 import dev.bltucker.vibeplayer.common.theme.VibePlayerTheme
-import dev.bltucker.vibeplayer.home.Track
+import dev.bltucker.vibeplayer.db.TrackEntity
 
 @Composable
 fun TrackListContent(
     modifier: Modifier = Modifier,
-    tracks: List<Track>,
-    onTrackClick: (Track) -> Unit = {}
+    tracks: List<TrackEntity>,
+    onTrackClick: (TrackEntity) -> Unit = {}
 ) {
     LazyColumn(
         modifier = modifier.fillMaxSize()
@@ -58,7 +58,7 @@ fun TrackListContent(
 
 @Composable
 private fun TrackItem(
-    track: Track,
+    track: TrackEntity,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -177,7 +177,7 @@ private fun DefaultAlbumArtIcon(modifier: Modifier = Modifier) {
 @Composable
 private fun TrackListContentPreview() {
     val sampleTracks = listOf(
-        Track(
+        TrackEntity(
             id = "1",
             name = "505",
             artist = "Arctic Monkeys",
@@ -185,7 +185,7 @@ private fun TrackListContentPreview() {
             albumArtUri = null,
             contentUri = ""
         ),
-        Track(
+        TrackEntity(
             id = "2",
             name = "505",
             artist = "Arctic Monkeys",
@@ -193,7 +193,7 @@ private fun TrackListContentPreview() {
             albumArtUri = null,
             contentUri = ""
         ),
-        Track(
+        TrackEntity(
             id = "3",
             name = "505",
             artist = "Arctic Monkeys",
@@ -201,7 +201,7 @@ private fun TrackListContentPreview() {
             albumArtUri = null,
             contentUri = ""
         ),
-        Track(
+        TrackEntity(
             id = "4",
             name = "505",
             artist = "Arctic Monkeys",
@@ -209,7 +209,7 @@ private fun TrackListContentPreview() {
             albumArtUri = null,
             contentUri = ""
         ),
-        Track(
+        TrackEntity(
             id = "5",
             name = "505",
             artist = "Arctic Monkeys",
@@ -229,7 +229,7 @@ private fun TrackListContentPreview() {
 private fun TrackItemPreview() {
     VibePlayerTheme {
         TrackItem(
-            track = Track(
+            track = TrackEntity(
                 id = "1",
                 name = "505",
                 artist = "Arctic Monkeys",

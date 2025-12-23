@@ -1,6 +1,7 @@
 package dev.bltucker.vibeplayer.home
 
 import dagger.Reusable
+import dev.bltucker.vibeplayer.db.TrackEntity
 import javax.inject.Inject
 
 data class HomeScreenModel(
@@ -14,16 +15,7 @@ data class HomeScreenModel(
 
     val hasRequiredPermissions: Boolean? = null,
     val needsToNavigateToPermissions: Boolean = false,
-    val trackList: List<Track> = emptyList(),
-)
-
-data class Track(
-    val id: String,
-    val name: String,
-    val artist: String,
-    val duration: String,
-    val contentUri: String,
-    val albumArtUri: String? = null
+    val trackList: List<TrackEntity> = emptyList(),
 )
 
 @Reusable
@@ -57,7 +49,7 @@ class HomeScreenModelReducer @Inject constructor() {
         return previousModel.copy(needsToNavigateToPermissions = false)
     }
 
-    fun updateModelWithTrackList(previousModel: HomeScreenModel, trackList: List<Track>): HomeScreenModel {
+    fun updateModelWithTrackList(previousModel: HomeScreenModel, trackList: List<TrackEntity>): HomeScreenModel {
         return previousModel.copy(trackList = trackList)
     }
 
