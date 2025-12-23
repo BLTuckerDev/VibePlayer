@@ -19,4 +19,6 @@ class TracksRepository @Inject constructor(
     suspend fun getTracksBatch(limit: Int, offset: Int): List<TrackEntity> = tracksDao.getTracksBatch(limit, offset)
 
     suspend fun getTrackCount(): Int = tracksDao.getTrackCount()
+
+    suspend fun getTrackById(trackId: String): TrackEntity? = tracksDao.getTrackById(trackId)
 }

@@ -24,4 +24,7 @@ interface TracksDao {
 
     @Query("SELECT COUNT(*) FROM tracks")
     suspend fun getTrackCount(): Int
+
+    @Query("SELECT * FROM tracks WHERE id = :trackId LIMIT 1")
+    suspend fun getTrackById(trackId: String): TrackEntity?
 }
