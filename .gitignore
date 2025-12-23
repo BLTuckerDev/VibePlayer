@@ -19,3 +19,5 @@ ai/
 .idea/deviceManager.xml
 /.claude/
 /GEMINI.md
+/.vscode/
+/.kotlin/errors/
