@@ -67,6 +67,11 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     implementation(libs.androidx.room.ktx)
 
+    // Media3
+    implementation("androidx.media3:media3-exoplayer:1.5.1")
+    implementation("androidx.media3:media3-common:1.5.1")
+
+
     // Navigation
     implementation(libs.androidx.navigation.compose)
 
