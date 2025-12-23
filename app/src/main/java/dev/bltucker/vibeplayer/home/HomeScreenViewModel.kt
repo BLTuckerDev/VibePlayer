@@ -5,9 +5,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.bltucker.vibeplayer.common.PermissionChecker
+import dev.bltucker.vibeplayer.db.TrackEntity
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import javax.inject.Inject
 
@@ -15,12 +17,31 @@ import javax.inject.Inject
 class HomeScreenViewModel @Inject constructor(
     private val permissionChecker: PermissionChecker,
     private val modelReducer: HomeScreenModelReducer,
-    private val mediaScanner: MediaScanner
+    private val mediaScanner: MediaScanner,
+    private val tracksRepository: TracksRepository
 ) : ViewModel() {
 
     @VisibleForTesting
     val mutableModel = MutableStateFlow(modelReducer.createInitialState())
     val observableModel: StateFlow<HomeScreenModel> = mutableModel
+
+    private var hasStarted = false
+
+    fun onStart() {
+        if (hasStarted) {
+            return
+        }
+
+        hasStarted = true
+        
+        viewModelScope.launch {
+            tracksRepository.getTracks().collectLatest { tracks ->
+                mutableModel.update {
+                    modelReducer.updateModelWithTrackList(it, tracks)
+                }
+            }
+        }
+    }
 
     fun onResume() {
         checkPermissions()
@@ -75,11 +96,7 @@ class HomeScreenViewModel @Inject constructor(
                 minSizeBytes = currentModel.ignoreSizeBytesSetting
             )
             
-            result.onSuccess { tracks ->
-                mutableModel.update {
-                    modelReducer.updateModelWithTrackList(it, tracks)
-                }
-            }.onFailure {
+            result.onFailure {
                 mutableModel.update { model ->
                     modelReducer.updateModelWithIsError(model, true)
                 }
@@ -97,7 +114,7 @@ class HomeScreenViewModel @Inject constructor(
         }
     }
 
-    fun onTrackClick(track: Track) {
+    fun onTrackClick(track: TrackEntity) {
         // TODO: Navigate to now playing or start playback
     }
 }

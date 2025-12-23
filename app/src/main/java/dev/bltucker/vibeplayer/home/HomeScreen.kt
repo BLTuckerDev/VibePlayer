@@ -10,11 +10,13 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.LifecycleResumeEffect
+import androidx.lifecycle.compose.LifecycleStartEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import dev.bltucker.vibeplayer.common.composables.AppTopBar
 import dev.bltucker.vibeplayer.common.composables.NavigationTopBar
+import dev.bltucker.vibeplayer.db.TrackEntity
 import dev.bltucker.vibeplayer.home.composables.EmptyInitialContent
 import dev.bltucker.vibeplayer.home.composables.EmptyScanResultsContent
 import dev.bltucker.vibeplayer.home.composables.ScanSettingsContent
@@ -29,6 +31,11 @@ fun NavGraphBuilder.homeScreen(
     composable(route = HOME_SCREEN_ROUTE) {
         val viewModel = hiltViewModel<HomeScreenViewModel>()
         val model by viewModel.observableModel.collectAsStateWithLifecycle()
+
+        LifecycleStartEffect(Unit) {
+            viewModel.onStart()
+            onStopOrDispose { }
+        }
 
         LifecycleResumeEffect(Unit) {
             viewModel.onResume()
@@ -67,7 +74,7 @@ private fun HomeScreen(
     onDurationSettingChanged: (Long) -> Unit,
     onSizeSettingChanged: (Long) -> Unit,
     onScanAgainClick: () -> Unit,
-    onTrackClick: (Track) -> Unit
+    onTrackClick: (TrackEntity) -> Unit
 ) {
     Scaffold(
         modifier = modifier,
